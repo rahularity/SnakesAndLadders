@@ -7,7 +7,6 @@ import java.util.List;
 @Data
 public class SumStrategy implements IDieStrategy{
 
-    @Value("${config.numberOfDies}")
     private int totalDies;
 
     @Override

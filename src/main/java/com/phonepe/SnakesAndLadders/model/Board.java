@@ -11,7 +11,6 @@ import java.util.Map;
 @Data
 public class Board {
 
-    @Value("${config.boardSize}")
     private int size;
     private int totalCells;
     private Map<Integer, Cell> cells;

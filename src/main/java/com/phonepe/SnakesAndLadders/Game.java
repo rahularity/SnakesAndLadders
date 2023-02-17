@@ -12,7 +12,6 @@ import com.phonepe.SnakesAndLadders.model.Player;
 import com.phonepe.SnakesAndLadders.model.boardentity.IBoardEntity;
 import com.phonepe.SnakesAndLadders.model.boardentity.WinnerCell;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.List;

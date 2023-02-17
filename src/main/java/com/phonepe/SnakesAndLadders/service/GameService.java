@@ -19,15 +19,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+
 public class GameService {
 
     public static void main(String[] args){
 
-
         Board board = new Board(10);
         List<IBoardEntity> boardEntityList = new ArrayList<>();
         List<Player> playersList = new ArrayList<>();
-        String fileName = "/Users/rahularity/Rahularity/IntelliJ Projects/SnakesAndLadders/src/main/resources/SnakeLadderInput.txt";
+        String fileName = "/Users/rahularity/Rahularity/SnakesAndLadders/src/main/java/com/phonepe/SnakesAndLadders/SnakeAndLadderInput";
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             // input snakes
@@ -101,7 +101,6 @@ public class GameService {
         // Get the location of the player who lost on the board
         for (Map.Entry<Integer, Cell> entry : board.getCells().entrySet()) {
             Cell cell = entry.getValue();
-
             if(cell.getOccupiedBy() != null){
                 Player player = cell.getOccupiedBy();
                 System.out.println(player.getName() + " has occupied cell " + cell.getPosition());
