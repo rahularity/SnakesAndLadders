@@ -23,10 +23,10 @@ public class GameTest {
     Board board = Mockito.mock(Board.class);
     IDieStrategy dieStrategy = Mockito.mock(MaxStrategy.class);
     IPlayerTurnStrategy playerTurnStrategy = Mockito.mock(RoundRobinStrategy.class);
+    Game game = new Game(dieStrategy, playerTurnStrategy, board);
 
     @Test
     void testAddPlayer() {
-        Game game = new Game(dieStrategy, playerTurnStrategy, board);
         Player player = new Player("Rahul", new Cell(2), 0, PlayerStatus.PLAYING);
         when(board.getTotalCells()).thenReturn(100);
         player.getCell().setPosition(1);
@@ -37,7 +37,6 @@ public class GameTest {
 
     @Test
     void testGetWinnersCount() {
-        Game game = new Game(dieStrategy, playerTurnStrategy, board);
         Player player1 = new Player("Rahul", new Cell(1), 0, PlayerStatus.PLAYING);
         Player player2 = new Player("Alex", new Cell(1), 0, PlayerStatus.PLAYING);
         when(board.getTotalCells()).thenReturn(100);
@@ -53,7 +52,6 @@ public class GameTest {
     // test for moving the player to the new position after getting the roll result
     @Test
     void testMovePlayerToNewPositionAfterRoll() {
-        Game game = new Game(dieStrategy, playerTurnStrategy, board);
         Player player = new Player("Rahul", new Cell(1), 0, PlayerStatus.PLAYING);
 
         Map<Integer, Cell> cells = new HashMap<>();

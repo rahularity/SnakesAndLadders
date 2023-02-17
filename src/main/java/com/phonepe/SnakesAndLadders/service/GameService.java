@@ -10,8 +10,11 @@ import com.phonepe.SnakesAndLadders.model.Player;
 import com.phonepe.SnakesAndLadders.model.boardentity.IBoardEntity;
 import com.phonepe.SnakesAndLadders.model.boardentity.Ladder;
 import com.phonepe.SnakesAndLadders.model.boardentity.Snake;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,14 +25,16 @@ import java.util.Map;
 
 public class GameService {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
 
         Board board = new Board(10);
         List<IBoardEntity> boardEntityList = new ArrayList<>();
         List<Player> playersList = new ArrayList<>();
-        String fileName = "/Users/rahularity/Rahularity/SnakesAndLadders/src/main/java/com/phonepe/SnakesAndLadders/SnakeAndLadderInput";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+        Resource resource = new ClassPathResource("SnakeAndLadderInput");
+        File file = resource.getFile();
+        FileReader fileReader = new FileReader(file);
+        try (BufferedReader br = new BufferedReader(fileReader)) {
             // input snakes
             int totalSnakes = Integer.parseInt(br.readLine());
             while(totalSnakes-- != 0){
@@ -103,7 +108,7 @@ public class GameService {
             Cell cell = entry.getValue();
             if(cell.getOccupiedBy() != null){
                 Player player = cell.getOccupiedBy();
-                System.out.println(player.getName() + " has occupied cell " + cell.getPosition());
+                System.out.println(player.getName() + " has occupied cell " + cell.getPosition() + " and lost the game!");
             }
         }
 
