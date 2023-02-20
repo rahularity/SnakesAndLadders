@@ -20,7 +20,6 @@ import java.util.List;
 public class Game {
 
     private Board board;
-    private List<Player> players;
     private IDieStrategy dieStrategy;
     private IPlayerTurnStrategy playerTurnStrategy;
 
@@ -33,37 +32,18 @@ public class Game {
         this.board = board;
         this.dieStrategy = dieStrategy;
         this.playerTurnStrategy = playerTurnStrategy;
-        players = new ArrayList<>();
-    }
-
-    public void addPlayer(Player player){
-        try {
-            int playerPosition = player.getCell().getPosition();
-            if(!isValidPlayerPosition(playerPosition)) {
-                throw new InvalidPlayerPositionException("Player: " + player.getName() + " - cannot be at an invalid position");
-            }
-            this.players.add(player);
-        } catch (InvalidPlayerPositionException e) {
-            // Log the exception and ignore the player
-            System.out.println("Invalid player position for player " + player.getName() + ". Ignoring player.");
-            e.printStackTrace();
-        }
-    }
-
-    private boolean isValidPlayerPosition(int position) {
-        return position > 0 && position < board.getTotalCells();
     }
 
     public void play(){
 
         try{
 
-            if(players.size() == 0){
+            if(board.getPlayers().size() == 0){
                 throw new NoPlayerException("There should be at least one player to play the game.");
             }
 
-            // play until there are totalPlayers-1 winners
-            while(countWinners() != players.size()-1) {
+            // play until winning condition has been met
+            while(!winningCondition()) {
 
                 // Game is deciding which player is next
                 Player player = playerTurnStrategy.nextPlayer();
@@ -79,12 +59,17 @@ public class Game {
                 // Game will move the player according to the roll result
                 movePlayerToNewPositionAfterRoll(player, rollResult);
             }
+            System.out.println("GAME OVER!!");
 
         } catch (Exception e){
             System.out.println("An error occurred during the game: " + e.getMessage());
             e.printStackTrace();
         }
 
+    }
+
+    private boolean winningCondition() {
+        return countWinners() == 1;
     }
 
     protected void movePlayerToNewPositionAfterRoll(Player player, int rollResult) {
@@ -98,7 +83,7 @@ public class Game {
         // when the player make a move set the previous cell unoccupied
         playerCurrentCell.setOccupiedBy(null);
 
-        Cell playerFinalCell =  board.getCells().get(playerCurrentCell.getPosition() + rollResult);
+        Cell playerFinalCell =  board.getCell(playerCurrentCell.getPosition() + rollResult);
         // set cell for the player
         player.setCell(playerFinalCell);
 
@@ -109,7 +94,7 @@ public class Game {
             playerFinalCell = player.getCell();
         }
 
-        if(playerFinalCell.getEntity() instanceof WinnerCell){
+        if(playerFinalCell.getEntity() != null && playerFinalCell.getEntity().getClass() == WinnerCell.class){
             WinnerCell entity = (WinnerCell) playerFinalCell.getEntity();
             entity.performAction(player);
             return;
@@ -120,8 +105,8 @@ public class Game {
         // if the cell is already occupied then the player has to start from the beginning
         if(playerFinalCell.getOccupiedBy() != null){
             Player occupiedByPlayer = playerFinalCell.getOccupiedBy();
-            occupiedByPlayer.setCell(board.getCells().get(1));
-            board.getCells().get(1).setOccupiedBy(occupiedByPlayer);
+            occupiedByPlayer.setCell(board.getCell(1));
+            board.getCell(1).setOccupiedBy(occupiedByPlayer);
             System.out.println("The cell " + playerFinalCell.getPosition() + " was already occupied by " + occupiedByPlayer.getName() + " hence " + occupiedByPlayer.getName() + " has to move to the starting of the board " + occupiedByPlayer.getCell().getPosition());
         }
         playerFinalCell.setOccupiedBy(player);
@@ -129,7 +114,7 @@ public class Game {
     }
 
     int countWinners() {
-        return players.stream().mapToInt(x -> x.getPlayerStatus() == PlayerStatus.WON ? 1 : 0).sum();
+        return board.getPlayers().stream().mapToInt(x -> x.getPlayerStatus() == PlayerStatus.WON ? 1 : 0).sum();
     }
 
 }

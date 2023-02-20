@@ -5,13 +5,14 @@ import com.phonepe.SnakesAndLadders.DieStrategies.MaxStrategy;
 import com.phonepe.SnakesAndLadders.PlayerTurnStrategy.IPlayerTurnStrategy;
 import com.phonepe.SnakesAndLadders.PlayerTurnStrategy.RoundRobinStrategy;
 import com.phonepe.SnakesAndLadders.enums.PlayerStatus;
-import com.phonepe.SnakesAndLadders.exceptions.InvalidPlayerPositionException;
 import com.phonepe.SnakesAndLadders.model.Board;
 import com.phonepe.SnakesAndLadders.model.Cell;
 import com.phonepe.SnakesAndLadders.model.Player;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,26 +27,19 @@ public class GameTest {
     Game game = new Game(dieStrategy, playerTurnStrategy, board);
 
     @Test
-    void testAddPlayer() {
-        Player player = new Player("Rahul", new Cell(2), 0, PlayerStatus.PLAYING);
-        when(board.getTotalCells()).thenReturn(100);
-        player.getCell().setPosition(1);
-        game.addPlayer(player);
-        assertTrue(1 == game.getPlayers().size());
-        assertEquals(player.toString(), game.getPlayers().get(0).toString());
-    }
-
-    @Test
     void testGetWinnersCount() {
-        Player player1 = new Player("Rahul", new Cell(1), 0, PlayerStatus.PLAYING);
-        Player player2 = new Player("Alex", new Cell(1), 0, PlayerStatus.PLAYING);
         when(board.getTotalCells()).thenReturn(100);
-        game.addPlayer(player1);
-        game.addPlayer(player2);
-        player1.setPlayerStatus(PlayerStatus.WON);
-        assertEquals(1, game.countWinners());
-        player2.setPlayerStatus(PlayerStatus.WON);
-        assertEquals(2, game.countWinners());
+
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Player("Rahul", new Cell(1), 0, PlayerStatus.PLAYING));
+        players.add(new Player("Alex", new Cell(5), 0, PlayerStatus.WON));
+        players.add(new Player("Sarang", new Cell(2), 0, PlayerStatus.WON));
+        players.add(new Player("Gaurav", new Cell(1), 0, PlayerStatus.WON));
+        when(board.getPlayers()).thenReturn(players);
+
+        game.setBoard(board);
+
+        assertEquals(3, game.countWinners());
     }
 
 
@@ -62,11 +56,11 @@ public class GameTest {
         when(board.getCells()).thenReturn(cells);
         when(board.getTotalCells()).thenReturn(100);
 
-        Cell cell1 = board.getCells().get(1);
+        Cell cell1 = board.getCell(1);
         player.setCell(cell1);
         cell1.setOccupiedBy(player);
 
-        Cell cell2 = board.getCells().get(4);
+        Cell cell2 = board.getCell(4);
         game.movePlayerToNewPositionAfterRoll(player, 3);
 
         assertEquals(cell2, player.getCell());

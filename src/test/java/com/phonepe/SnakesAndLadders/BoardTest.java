@@ -1,8 +1,10 @@
 package com.phonepe.SnakesAndLadders;
 
+import com.phonepe.SnakesAndLadders.enums.PlayerStatus;
 import com.phonepe.SnakesAndLadders.exceptions.InvalidBoardSizeException;
 import com.phonepe.SnakesAndLadders.model.Board;
 import com.phonepe.SnakesAndLadders.model.Cell;
+import com.phonepe.SnakesAndLadders.model.Player;
 import com.phonepe.SnakesAndLadders.model.boardentity.IBoardEntity;
 import com.phonepe.SnakesAndLadders.model.boardentity.WinnerCell;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 public class BoardTest {
 
@@ -54,8 +57,15 @@ public class BoardTest {
     @Test
     public void testBoardSizeOne() {
         Board board = new Board(1);
-        Cell cell = board.getCells().get(1);
+        Cell cell = board.getCell(1);
         IBoardEntity entity = cell.getEntity();
         assertTrue(entity instanceof WinnerCell);
+    }
+
+    @Test
+    void testAddPlayer() {
+        board.addPlayer(1,"Rahul");
+        assertTrue(1 == board.getPlayers().size());
+        assertEquals("Rahul", board.getPlayers().get(0).getName());
     }
 }

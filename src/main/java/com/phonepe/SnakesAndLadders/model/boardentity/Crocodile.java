@@ -5,16 +5,17 @@ import com.phonepe.SnakesAndLadders.enums.EntityName;
 import com.phonepe.SnakesAndLadders.exceptions.InvalidLadderPositionException;
 import com.phonepe.SnakesAndLadders.model.Cell;
 import com.phonepe.SnakesAndLadders.model.Player;
+import lombok.Data;
 
+@Data
 public class Crocodile implements IBoardEntity {
 
     private EntityName name;
     private Cell head;
     private Cell tail;
 
-    public Crocodile(Cell head, Cell tail){
+    public Crocodile(Cell head){
         this.head = head;
-        this.tail = tail;
         this.name = EntityName.CROCODILE;
     }
 
