@@ -21,7 +21,7 @@ public class Crocodile implements IBoardEntity {
 
     @Override
     public void performAction(Player player) {
-        System.out.print(" and bitten by snake at " + head.getPosition());
+        System.out.print(" and bitten by Crocodile at " + head.getPosition());
         player.setCell(tail);
     }
 
@@ -29,8 +29,8 @@ public class Crocodile implements IBoardEntity {
     public String toString() {
         return "Crocodile{" +
                 "name=" + name +
-                ", head=" + head.toString() +
-                ", tail=" + tail.toString() +
+                ", head=" + head.getPosition() +
+                ", tail=" + tail.getPosition() +
                 '}';
     }
 }

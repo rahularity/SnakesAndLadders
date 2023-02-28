@@ -1,6 +1,8 @@
 package com.phonepe.SnakesAndLadders.service;
 
 import com.phonepe.SnakesAndLadders.DieStrategies.MaxStrategy;
+import com.phonepe.SnakesAndLadders.DieStrategies.MinStrategy;
+import com.phonepe.SnakesAndLadders.DieStrategies.SumStrategy;
 import com.phonepe.SnakesAndLadders.Game;
 import com.phonepe.SnakesAndLadders.PlayerTurnStrategy.RoundRobinStrategy;
 import com.phonepe.SnakesAndLadders.enums.EntityName;
@@ -52,6 +54,24 @@ public class GameService {
                 boardEntityList.add(board.getEntity(positions.get(0)));
             }
 
+            int totalCrocodile = Integer.parseInt(br.readLine());
+            while(totalCrocodile-- != 0){
+                Integer pos = Integer.parseInt(br.readLine());
+                // List<Integer> positions = Arrays.stream(line.split(" ")).map(Integer::parseInt).toList();
+
+                board.setEntity(EntityName.CROCODILE, pos);
+                boardEntityList.add(board.getEntity(pos));
+            }
+
+            int totalMines = Integer.parseInt(br.readLine());
+            while(totalMines-- != 0){
+                Integer pos = Integer.parseInt(br.readLine());
+                // List<Integer> positions = Arrays.stream(line.split(" ")).map(Integer::parseInt).toList();
+
+                board.setEntity(EntityName.MINE, pos);
+                boardEntityList.add(board.getEntity(pos));
+            }
+
             int totalPlayers = Integer.parseInt(br.readLine());
             while(totalPlayers-- != 0){
                 String line = br.readLine();
@@ -74,9 +94,12 @@ public class GameService {
 
         // GAME SETUP
         MaxStrategy maxDieStrategy = new MaxStrategy();
+        MinStrategy minStrategy = new MinStrategy();
+        SumStrategy sumStrategy = new SumStrategy();
         maxDieStrategy.setTotalDies(1);
+        sumStrategy.setTotalDies(1);
         RoundRobinStrategy roundRobinPlayerTurnStrategy = new RoundRobinStrategy(board.getPlayers());
-        Game game = new Game(maxDieStrategy, roundRobinPlayerTurnStrategy, board);
+        Game game = new Game(sumStrategy, roundRobinPlayerTurnStrategy, board);
 
         // Play the game
         game.play();

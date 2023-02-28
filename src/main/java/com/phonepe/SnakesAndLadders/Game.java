@@ -69,7 +69,7 @@ public class Game {
     }
 
     private boolean winningCondition() {
-        return countWinners() == 1;
+        return countWinners() == board.getPlayers().size()-1;
     }
 
     protected void movePlayerToNewPositionAfterRoll(Player player, int rollResult) {

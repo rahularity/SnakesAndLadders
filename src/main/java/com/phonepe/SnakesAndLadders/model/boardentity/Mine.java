@@ -26,7 +26,7 @@ public class Mine implements IBoardEntity {
     public String toString() {
         return "Mine{" +
                 "name=" + name +
-                ", position=" + position.toString() +
+                ", position=" + position.getPosition() +
                 '}';
     }
 }
